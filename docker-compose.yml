@@ -1,0 +1,66 @@
+version: '3'
+
+services:
+  cm.qa.tools.visualcompare.api:
+    image: cm.qa.tools.visualcompare.api
+    build:
+      context: .
+      dockerfile: CM.QA.Tools.VisualCompare.API/Dockerfile
+    depends_on:
+      - rabbitmq
+    environment:
+      CMQA_VISUAL_RABBIT_USER: "${CMQA_VISUAL_RABBIT_USER}"
+      CMQA_VISUAL_RABBIT_PASS: "${CMQA_VISUAL_RABBIT_PASS}"
+      CMQA_VISUAL_RABBIT_HOST: "${CMQA_VISUAL_RABBIT_HOST}"
+    labels:
+      cm.qa.tools.visualcompare.api.description: "Visual Compare Web API"
+    ports:
+      - "5000:80"
+    restart: unless-stopped
+
+  cm.qa.tools.visualcompare.worker:
+    image: cm.qa.tools.visualcompare.worker
+    build:
+      context: .
+      dockerfile: CM.QA.Tools.VisualCompare.Worker/Dockerfile
+    depends_on:
+      - cm.qa.tools.visualcompare.api
+      - rabbitmq
+      - sauceconnect
+    environment:
+      CMQA_VISUAL_RABBIT_USER: "${CMQA_VISUAL_RABBIT_USER}"
+      CMQA_VISUAL_RABBIT_PASS: "${CMQA_VISUAL_RABBIT_PASS}"
+      CMQA_VISUAL_RABBIT_HOST: "${CMQA_VISUAL_RABBIT_HOST}"
+      CMQA_VISUAL_JIRA_HOST: "${CMQA_VISUAL_JIRA_HOST}"
+      CMQA_VISUAL_JIRA_USER: "${CMQA_VISUAL_JIRA_USER}"
+      CMQA_VISUAL_JIRA_KEY: "${CMQA_VISUAL_JIRA_KEY}"
+      CMQA_VISUAL_GRID_HOST: "${CMQA_VISUAL_GRID_HOST}"
+      CMQA_VISUAL_GRID_USER: "${CMQA_VISUAL_GRID_USER}"
+      CMQA_VISUAL_GRID_KEY: "${CMQA_VISUAL_GRID_KEY}"
+    labels:
+      cm.qa.tools.visualcompare.worker.description: "Visual Compare Worker"
+    restart: unless-stopped
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    environment:
+      RABBITMQ_DEFAULT_USER: "${CMQA_VISUAL_RABBIT_USER}"
+      RABBITMQ_DEFAULT_PASS: "${CMQA_VISUAL_RABBIT_PASS}"
+    labels:
+      cm.qa.tools.visualcompare.rabbit.description: "Visual Compare Middleware"
+    ports:
+      - "8080:15672"
+      - "5672:5672"
+    restart: unless-stopped
+    
+  sauceconnect:
+    image: jordan/sauce-connect:latest
+    restart: unless-stopped
+    expose:
+      - "4445"
+    ports:
+      - "0.0.0.0:4445:4445"
+    labels:
+      cm.qa.tools.visualcompare.sauceconnect.description: "Visual Compare Sauce Connect Proxy"
+    command: "--user ${CMQA_VISUAL_GRID_USER} --api-key ${CMQA_VISUAL_GRID_KEY} -i visual-jira-pool"
+
