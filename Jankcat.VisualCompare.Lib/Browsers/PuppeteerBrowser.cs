@@ -8,6 +8,7 @@ namespace Jankcat.VisualCompare.Lib.Browsers
     public class PuppeteerBrowser : IBrowser
     {
         private Browser _browser;
+        private Page _page;
 
         public PuppeteerBrowser()
         {
@@ -20,27 +21,34 @@ namespace Jankcat.VisualCompare.Lib.Browsers
             {
                 Headless = true
             });
-        }
 
-        public async Task  Dispose()
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task GoToPage(string url)
-        {
-            var page = await _browser.NewPageAsync();
-            await page.SetViewportAsync(new ViewPortOptions
+            _page = await _browser.NewPageAsync();
+            await _page.SetViewportAsync(new ViewPortOptions
             {
                 Width = 1920,
                 Height = 1080
             });
-            await page.GoToAsync(url);
+        }
+
+        public async Task  Dispose()
+        {
+            await _page.CloseAsync();
+            await _browser.CloseAsync();
+        }
+
+        public async Task GoToPage(string url)
+        {
+            await _page.GoToAsync(url);
         }
 
         public async Task<IMagickImage> TakeScreenshot()
         {
-            throw new NotImplementedException();
+            IMagickImage screenshot;
+            using (var stream = await _page.ScreenshotStreamAsync())
+            {
+                screenshot = new MagickImage(stream);
+            }
+            return screenshot;
         }
     }
 }
