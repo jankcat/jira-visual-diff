@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-  cm.qa.tools.visualcompare.api:
+  jankcat.visualcompare.api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
     ports:

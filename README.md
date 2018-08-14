@@ -2,16 +2,12 @@
 
 A visual comparison tool that displays your diff right in JIRA!
 
-
-
- 
-
 ## Installation
 
 ### Pre-reqs & Notes
 
 - The library was built to use SauceLabs or a Se2 Grid, but can easily be adapted to other hosts like BrowserStack. Check the BrowserManager class out!
-- ImageMagick.NET runs on Windows and Linux at the time of this writing, and so this repo will likely not run on a Mac.
+- ImageMagick.NET runs on Windows, Linux, and MacOS at the time of this writing, so this should work cross-platform.
 - The docker compose file spins up a SauceConnect proxy instance, allowing for internal sites to be diff'd. This can be disabled, and I will add instructions how when I have time... whoops.
 
 ### TestCaseManager

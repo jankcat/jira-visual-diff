@@ -6,7 +6,7 @@
     <ProjectGuid>f58f9d82-5ae7-4ab0-99a9-a36efb7d5a2d</ProjectGuid>
     <DockerLaunchBrowser>True</DockerLaunchBrowser>
     <DockerServiceUrl>http://localhost:{ServicePort}/api/visual</DockerServiceUrl>
-    <DockerServiceName>cm.qa.tools.visualcompare.api</DockerServiceName>
+    <DockerServiceName>jankcat.visualcompare.api</DockerServiceName>
   </PropertyGroup>
   <ItemGroup>
     <None Include="docker-compose.override.yml">
