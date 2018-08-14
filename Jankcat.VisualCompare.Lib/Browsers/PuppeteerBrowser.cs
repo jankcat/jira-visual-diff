@@ -9,13 +9,20 @@ namespace Jankcat.VisualCompare.Lib.Browsers
     {
         private Browser _browser;
         private Page _page;
+        private ViewPortOptions _vpOpts;
 
-        public PuppeteerBrowser()
+        public PuppeteerBrowser(ViewPortOptions viewPortOptions = null)
         {
+            _vpOpts = viewPortOptions ?? new ViewPortOptions
+            {
+                Width = 1920,
+                Height = 1080
+            };
         }
 
         public async Task Initialize()
         {
+
             await new BrowserFetcher().DownloadAsync(BrowserFetcher.DefaultRevision);
             _browser = await Puppeteer.LaunchAsync(new LaunchOptions
             {
@@ -23,11 +30,7 @@ namespace Jankcat.VisualCompare.Lib.Browsers
             });
 
             _page = await _browser.NewPageAsync();
-            await _page.SetViewportAsync(new ViewPortOptions
-            {
-                Width = 1920,
-                Height = 1080
-            });
+            await _page.SetViewportAsync(_vpOpts);
         }
 
         public async Task  Dispose()
