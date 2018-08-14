@@ -71,9 +71,13 @@ namespace Jankcat.VisualCompare.Worker
             var host = Environment.GetEnvironmentVariable("VISDIFF_GRID_HOST");
             var opts = SauceLabsBrowser.GetDefaultBrowserOptions(true); // Set this to false for no tunnel
             opts = SeleniumBrowser.AddCredentials(opts, user, apiKey);
-            var browser = new SauceLabsBrowser(opts, host);
+			var browser = new SauceLabsBrowser(opts, host);
 
-            var tcManager = new DefaultTestCaseManager(browser);
+            var tcManager = new DefaultTestCaseManager(browser)
+            {
+                ProdBaseUrl = "http://example.com",
+                StageBaseUrl = "http://stage.example.com"
+            };
 
 			// You can do some fun stuff in here, like:
 			// if (ticket.startsWith("PROJECT1-")) tcManager = new ProjectOneTCManager(browser); - This example could also be handled inside of a single TCManager

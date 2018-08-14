@@ -6,10 +6,18 @@ A visual comparison tool that displays your diffs right in JIRA!
 
 ### Pre-reqs & Notes
 
-- The library was built to use SauceLabs or a Se3 Grid, but can easily be adapted to other services like BrowserStack. Check the IBrowser interface out!
+- The library was built to use Puppeteer, SauceLabs, or a hosted Se3 Grid, but can easily be adapted to other services like BrowserStack. Check the IBrowser interface out!
 - ImageMagick.NET runs on Windows, Linux, and MacOS at the time of this writing, so this should work cross-platform.
-- The library can be used with other applications, but this repo contains a JIRA WebHook-compatible WebAPI as well as a RabbitMQ Consumer/Worker as scaffolding.
-- To keep the lib flexible, how to take the screenshots as well as how to browse is completely definable via interfaces.
+- The library can be used in other applications, but this repo contains a JIRA WebHook-compatible WebAPI as well as a RabbitMQ Consumer/Worker as scaffolding.
+- To keep the library flexible, 'how' to take the screenshots as well as 'how' to browse the web is completely definable via interfaces.
+
+### Summary
+
+1. Install [docker](#docker) + [docker-compose](#docker-compose)
+2. Fork this repo
+3. Modify the `Worker` project's `Program.cs` file. Either change the `ProdBaseUrl` and `StageBaseUrl` to your own, or impliment `ITestCaseManager` using the provided example.
+4. Set your JIRA and RabbitMQ environment variables, start the project [(see below)](#visual-compare).
+5. [Set up the WebHook](#jira) in your JIRA instance as you see fit.
 
 ### ITestCaseManager
 

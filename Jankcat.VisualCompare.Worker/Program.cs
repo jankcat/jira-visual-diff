@@ -67,7 +67,11 @@ namespace Jankcat.VisualCompare.Worker
 
             // Browser
             var browser = new PuppeteerBrowser();
-            var tcManager = new DefaultTestCaseManager(browser);
+            var tcManager = new DefaultTestCaseManager(browser)
+            {
+                ProdBaseUrl = "http://example.com",
+                StageBaseUrl = "http://stage.example.com"
+            };
 
             // GO!
             Console.WriteLine(String.Format("[RABBIT][JIRA-ASYNC] Received: {0}", ticket));

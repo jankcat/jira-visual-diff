@@ -12,6 +12,9 @@ namespace Jankcat.VisualCompare.Lib.TestCaseManagers
         private IBrowser _browser;
         private Issue _issue;
 
+        public string ProdBaseUrl { get; set; }
+        public string StageBaseUrl { get; set; }
+
         public DefaultTestCaseManager(IBrowser browser)
         {
             _browser = browser;
@@ -26,19 +29,12 @@ namespace Jankcat.VisualCompare.Lib.TestCaseManagers
 
         public async Task GoToPage_Original(UrlDetails url)
         {
-            await GoToPage(url);
+            await Browser.GoToPage(String.Format("{0}{1}", ProdBaseUrl, url.RightSide));
         }
 
         public async Task GoToPage_Updated(UrlDetails url)
         {
-            await GoToPage(url);
-        }
-
-        private async Task GoToPage(UrlDetails url) 
-        {
-            // Do things like decide what environment, add credentials, et.
-            await _browser.GoToPage(String.Format("http://example.com"));
-            throw new NotImplementedException();
+            await Browser.GoToPage(String.Format("{0}{1}", StageBaseUrl, url.RightSide));
         }
     }
 }
