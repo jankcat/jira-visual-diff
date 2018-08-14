@@ -6,6 +6,8 @@
 
   <ItemGroup>
     <Folder Include="Models\" />
+    <Folder Include="Browsers\" />
+    <Folder Include="SeleniumSupport\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Magick.NET-Q16-AnyCPU" Version="7.6.0" />
@@ -15,5 +17,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Class1.cs" />
+    <Compile Remove="Utilities\BrowserManager.cs" />
   </ItemGroup>
 </Project>

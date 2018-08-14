@@ -35,7 +35,7 @@ services:
       VISDIFF_JIRA_USER: "${VISDIFF_JIRA_USER}"
       VISDIFF_JIRA_KEY: "${VISDIFF_JIRA_KEY}"
       VISDIFF_GRID_HOST: "${VISDIFF_GRID_HOST}"
-      VISDIFF_GRID_USER: "${CVISDIFF_GRID_USER}"
+      VISDIFF_GRID_USER: "${VISDIFF_GRID_USER}"
       VISDIFF_GRID_KEY: "${VISDIFF_GRID_KEY}"
     labels:
       jankcat.visualcompare.worker.description: "Visual Compare Worker"

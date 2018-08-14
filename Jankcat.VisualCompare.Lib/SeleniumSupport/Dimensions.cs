@@ -1,5 +1,4 @@
-﻿using System;
-namespace Jankcat.VisualCompare.Lib.Models
+﻿namespace Jankcat.VisualCompare.Lib.SeleniumSupport
 {
     public class Dimensions
     {

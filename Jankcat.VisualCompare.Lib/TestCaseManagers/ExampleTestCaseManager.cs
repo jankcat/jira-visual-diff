@@ -1,14 +1,14 @@
 using System;
 using Jankcat.VisualCompare.Lib.Models;
-using Jankcat.VisualCompare.Lib.Utilities;
+using Jankcat.VisualCompare.Lib.Browsers;
 
 namespace Jankcat.VisualCompare.Lib.TestCaseManagers
 {
     public class ExampleTestCaseManager : ITestCaseManager
     {
-        public BrowserManager Browser { get; }
+        public IBrowser Browser { get; }
 
-        public ExampleTestCaseManager(BrowserManager browser)
+        public ExampleTestCaseManager(IBrowser browser)
         {
             Browser = browser;
         }
