@@ -1,0 +1,66 @@
+version: '3.4'
+
+services:
+  jankcat.visualcompare.api:
+    image: jankcat.visualcompare.api
+    build:
+      context: .
+      dockerfile: Jankcat.VisualCompare.API/Dockerfile
+    depends_on:
+      - rabbitmq
+    environment:
+      VISDIFF_RABBIT_USER: "${VISDIFF_RABBIT_USER}"
+      VISDIFF_RABBIT_PASS: "${VISDIFF_RABBIT_PASS}"
+      VISDIFF_RABBIT_HOST: "${VISDIFF_RABBIT_HOST}"
+    labels:
+      jankcat.visualcompare.api.description: "Visual Compare Web API"
+    ports:
+      - "5000:80"
+    restart: unless-stopped
+
+  jankcat.visualcompare.worker:
+    image: jankcat.visualcompare.worker
+    build:
+      context: .
+      dockerfile: Jankcat.VisualCompare.Worker/Dockerfile
+    depends_on:
+      - jankcat.visualcompare.api
+      - rabbitmq
+      - sauceconnect
+    environment:
+      VISDIFF_RABBIT_USER: "${VISDIFF_RABBIT_USER}"
+      VISDIFF_RABBIT_PASS: "${VISDIFF_RABBIT_PASS}"
+      VISDIFF_RABBIT_HOST: "${VISDIFF_RABBIT_HOST}"
+      VISDIFF_JIRA_HOST: "${VISDIFF_JIRA_HOST}"
+      VISDIFF_JIRA_USER: "${VISDIFF_JIRA_USER}"
+      VISDIFF_JIRA_KEY: "${VISDIFF_JIRA_KEY}"
+      VISDIFF_GRID_HOST: "${VISDIFF_GRID_HOST}"
+      VISDIFF_GRID_USER: "${VISDIFF_GRID_USER}"
+      VISDIFF_GRID_KEY: "${VISDIFF_GRID_KEY}"
+    labels:
+      jankcat.visualcompare.worker.description: "Visual Compare Worker"
+    restart: unless-stopped
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    environment:
+      RABBITMQ_DEFAULT_USER: "${VISDIFF_RABBIT_USER}"
+      RABBITMQ_DEFAULT_PASS: "${VISDIFF_RABBIT_PASS}"
+    labels:
+      jankcat.visualcompare.rabbit.description: "Visual Compare Middleware"
+    ports:
+      - "8080:15672"
+      - "5672:5672"
+    restart: unless-stopped
+    
+  sauceconnect:
+    image: jordan/sauce-connect:latest
+    restart: unless-stopped
+    expose:
+      - "4445"
+    ports:
+      - "0.0.0.0:4445:4445"
+    labels:
+      jankcat.visualcompare.sauceconnect.description: "Visual Compare Sauce Connect Proxy"
+    command: "--user ${VISDIFF_GRID_USER} --api-key ${VISDIFF_GRID_KEY} -i visual-jira-pool"
+

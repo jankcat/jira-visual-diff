@@ -1,26 +1,33 @@
 ## Info
 
-A visual comparison tool that displays your diff right in JIRA!
+A visual comparison tool that displays your diffs right in JIRA!
 
 ## Installation
 
 ### Pre-reqs & Notes
 
-- The library was built to use SauceLabs or a Se2 Grid, but can easily be adapted to other hosts like BrowserStack. Check the BrowserManager class out!
+- The library was built to use SauceLabs or a Se3 Grid, but can easily be adapted to other services like BrowserStack. Check the IBrowser interface out!
 - ImageMagick.NET runs on Windows, Linux, and MacOS at the time of this writing, so this should work cross-platform.
-- The docker compose file spins up a SauceConnect proxy instance, allowing for internal sites to be diff'd. This can be disabled, and I will add instructions how when I have time... whoops.
+- The library can be used with other applications, but this repo contains a JIRA WebHook-compatible WebAPI as well as a RabbitMQ Consumer/Worker as scaffolding.
+- To keep the lib flexible, how to take the screenshots as well as how to browse is completely definable via interfaces.
 
-### TestCaseManager
+### ITestCaseManager
 
-The tool uses a TestCaseManager. Essentially, the test case manager is what directs the browser to your relevant environments. Since we are using the tool across multiple clients and projects, we needed a way to manage the different "requirements" for taking the screenshots:
+The tool uses an `ITestCaseManager`. Essentially, the test case manager is what directs the browser to your relevant environments. Since we are using the tool across multiple clients and projects, we needed a way to manage the different "requirements" for taking the screenshots:
 
 - Some pages require username/password
 - Some sites have modals that need to be closed
 - Some pages need accordions or other components interacted with prior to screenshots being taken
 
-Since these varied so much, the easiest solution was to utilize TestCaseManagers based on the JIRA Project (the front part of the JIRA ticket number). 
+Since these varied so much, the easiest solution was to utilize `ITestCaseManager`s. Your worker can impliment its own `ITestCaseManager`s and provide them to the `OrchestrationUtils` as desired.
 
-Take a look at the ExampleTestCaseManager class provided and customize it to your liking. Once you are complete, don't forget to add your own to the NNAHUtils' RunJiraDiff function. This function is the basic orchestration for our multi-site capturing, and contains the logic that decides which TestCaseManager will be used for a given test case.
+Take a look at the `ExampleTestCaseManager` class provided and customize it to your liking.
+
+### IBrowser
+
+In order to allow flexibility between browsers and web drivers, an `IBrowser` interface is utilized. Some projects prefer Selenium, some prefer Puppeteer, and likely other options will surface in the future as technology pushes forward.
+
+Check out the examples/pre-written `IBrowser`s if you want to see what is available or roll your own.
 
 ### JIRA
 
@@ -30,7 +37,7 @@ In our workflow, we have the WebHook have no "default" triggers, and instead tri
 
 You will also need to create a local JIRA user with permission to read relevant tickets, upload attachments, and add comments.
 
-As seen in the JIRAUtils class, the tool looks for a "URLs" field in JIRA. Without this piece of data, the tool would have no idea what URLs it is comparing.
+As seen in the `JIRAUtils` class, the tool looks for a "URLs" field in JIRA. Without this piece of data, the tool would have no idea what URLs it is comparing.
 
 ### Docker
 
@@ -72,13 +79,7 @@ sudo ln -sf /usr/local/bin/docker-compose /usr/bin/docker-compose
 Replace the variables below with your own! Remember to replace ens160 in the ifconfig command with your interface name. Alternatively, you can replace that entire command with your IP Address.
 
 ```
-git clone ssh://git@bitbucket.criticalmass.com:7999/qa/qa-tools-visual.git
-
-export VISDIFF_GRID_USER=sauce_labs_username
-export VISDIFF_GRID_KEY="sauce_labs_api_key"
-export VISDIFF_GRID_HOST="http://ondemand.saucelabs.com:80/wd/hub"
-
-export VISDIFF_JIRA_HOST="https://jira_url"
+export VISDIFF_JIRA_HOST="https://jira_url.com"
 export VISDIFF_JIRA_USER="some_jira_user"
 export VISDIFF_JIRA_KEY="some_jira_password"
 
@@ -91,7 +92,5 @@ docker-compose up -d
 
 ## Thoughts & Stuff...
 
-I wrote this for internal use, but thought it could easily be adapted. That is why you see some language like CM, NNAH, and the likes around, as these are internal acronyms (nothing private, hold your horses).
-
-If you have any questions or suggestions, I am 100% open to hearing them and doing what I can!
+If you have any questions or suggestions, I am 100% open to hearing them and doing what I can! Open an issue, submit a PR if you'd like.
 
