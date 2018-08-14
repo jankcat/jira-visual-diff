@@ -13,7 +13,7 @@ namespace Jankcat.VisualCompare.API.Controllers
         public string Get(string id)
         {
             if (String.IsNullOrWhiteSpace(id)) return "No ticket number provided";
-            var factory = RabbitUtil.GetRabbitConnection();
+            var factory = RabbitUtils.GetRabbitConnection();
             using (var connection = factory.CreateConnection())
             using (var channel = connection.CreateModel())
             {
@@ -36,7 +36,7 @@ namespace Jankcat.VisualCompare.API.Controllers
         public void Post(string id)
         {
             if (String.IsNullOrWhiteSpace(id)) return;
-            var factory = RabbitUtil.GetRabbitConnection();
+            var factory = RabbitUtils.GetRabbitConnection();
             using (var connection = factory.CreateConnection())
             using (var channel = connection.CreateModel())
             {

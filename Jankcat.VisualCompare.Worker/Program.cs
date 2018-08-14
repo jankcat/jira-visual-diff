@@ -25,7 +25,7 @@ namespace Jankcat.VisualCompare.Worker
 
             // Initialize the JIRA listener
             Console.WriteLine("[RABBIT][JIRA] Listener starting");
-            var factory = RabbitUtil.GetRabbitConnection();
+            var factory = RabbitUtils.GetRabbitConnection();
             using (var connection = factory.CreateConnection())
             using (var channel = connection.CreateModel())
             {
