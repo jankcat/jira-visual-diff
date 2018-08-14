@@ -18,6 +18,12 @@
 
 >Copyright (c) .NET Foundation and Contributors. All rights reserved.
 
+### AspNet Core
+
+[Released](https://github.com/aspnet/Home/blob/master/LICENSE.txt) under the Apache License v2.
+
+>Copyright (c) .NET Foundation and Contributors. All rights reserved.
+
 ### Magick.NET
 
 [Released](https://github.com/dlemstra/Magick.NET/blob/master/License.txt) under the Apache License v2.
