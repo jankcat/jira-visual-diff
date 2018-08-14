@@ -1,6 +1,7 @@
 using System;
 using Jankcat.VisualCompare.Lib.Models;
 using Jankcat.VisualCompare.Lib.Browsers;
+using System.Threading.Tasks;
 
 namespace Jankcat.VisualCompare.Lib.TestCaseManagers
 {
@@ -13,26 +14,21 @@ namespace Jankcat.VisualCompare.Lib.TestCaseManagers
             Browser = browser;
         }
 
-        public void Dispose()
-        {
-            Browser.Dispose();
-        }
-
-        public void GoToPage_Original(UrlDetails url)
+        public async Task GoToPage_Original(UrlDetails url)
         {
             var originalBase = (url.LeftSide.ToLower().Contains("brandone.com")) ? origBaseUrlBrandOne : origBaseUrlBrandTwo;
-            GoToPage(String.Format("{0}{1}", originalBase, url.RightSide));
+            await GoToPage(String.Format("{0}{1}", originalBase, url.RightSide));
         }
 
-        public void GoToPage_Updated(UrlDetails url)
+        public async Task GoToPage_Updated(UrlDetails url)
         {
             var updatedBase = (url.LeftSide.ToLower().Contains("brandone.com")) ? updatedBaseUrlBrandOne : updatedBaseUrlBrandTwo;
-            GoToPage(String.Format("{0}{1}", updatedBase, url.RightSide));
+            await GoToPage(String.Format("{0}{1}", updatedBase, url.RightSide));
         }
 
-        private void GoToPage(string url)
+        private async Task GoToPage(string url)
         {
-            Browser.GoToPage(url);
+            await Browser.GoToPage(url);
         }
 
         const string origBaseUrlBrandTwo = "https://brandtwo.com";

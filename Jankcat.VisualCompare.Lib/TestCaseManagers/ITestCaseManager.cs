@@ -1,5 +1,6 @@
 ﻿using Jankcat.VisualCompare.Lib.Models;
 using Jankcat.VisualCompare.Lib.Browsers;
+using System.Threading.Tasks;
 
 namespace Jankcat.VisualCompare.Lib.TestCaseManagers
 {
@@ -7,8 +8,7 @@ namespace Jankcat.VisualCompare.Lib.TestCaseManagers
     {
         IBrowser Browser { get; } 
         // Will happen on every navigation
-        void GoToPage_Original(UrlDetails url);
-        void GoToPage_Updated(UrlDetails url);
-        void Dispose();
+        Task GoToPage_Original(UrlDetails url);
+        Task GoToPage_Updated(UrlDetails url);
     }
 }

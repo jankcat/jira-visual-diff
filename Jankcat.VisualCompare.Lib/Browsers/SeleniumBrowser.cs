@@ -10,24 +10,38 @@ namespace Jankcat.VisualCompare.Lib.Browsers
 {
     public class SeleniumBrowser : IBrowser
     {
-        private readonly IWebDriver _driver;
+        private IWebDriver _driver;
+        private DriverOptions _opts;
+        private string _grid;
         public IWebDriver Driver { get { return _driver; } }
 
         public SeleniumBrowser(DriverOptions opts, string grid)
         {
-            _driver = new RemoteWebDriver(new Uri(grid), opts);
+            _opts = opts;
+            _grid = grid;
         }
 
-        public void Dispose()
+        public async Task Initialize()
         {
-            _driver.Quit();
+            await Task.Run(() => {
+                _driver = new RemoteWebDriver(new Uri(_grid), _opts);
+            });
         }
 
-        public void GoToPage(string url)
+        public async Task Dispose()
         {
-            _driver.Navigate().GoToUrl(url);
-            var wait = new OpenQA.Selenium.Support.UI.WebDriverWait(_driver, TimeSpan.FromSeconds(90.00));
-            wait.Until(driver => ((IJavaScriptExecutor)_driver).ExecuteScript("return document.readyState").Equals("complete"));
+            await Task.Run(() => {
+                _driver.Quit();
+            });
+        }
+
+        public async Task GoToPage(string url)
+        {
+            await Task.Run(() => {
+                _driver.Navigate().GoToUrl(url);
+                var wait = new OpenQA.Selenium.Support.UI.WebDriverWait(_driver, TimeSpan.FromSeconds(90.00));
+                wait.Until(driver => ((IJavaScriptExecutor)_driver).ExecuteScript("return document.readyState").Equals("complete"));
+            });
         }
 
         public static DriverOptions GetDefaultBrowserOptions()
@@ -54,7 +68,7 @@ namespace Jankcat.VisualCompare.Lib.Browsers
             return opts;
         }
 
-        public IMagickImage TakeScreenshot()
+        public async Task<IMagickImage> TakeScreenshot()
         {
             // Hide Scroll Bars, Trigger Resize Event, Scroll to top
             SeleniumUtils.ToggleScrollBars(_driver, false);
@@ -63,7 +77,7 @@ namespace Jankcat.VisualCompare.Lib.Browsers
             SeleniumUtils.NormalScroll(_driver, 0, 0);
 
             // Let the browser catch up
-            Task.Delay(200).Wait();
+            await Task.Delay(200);
 
             var seOpts = new ScreenshotOptions();
             var dimensions = SeleniumUtils.GetPageDimensions(_driver);

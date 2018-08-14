@@ -20,16 +20,18 @@ namespace Jankcat.VisualCompare.Lib.Utilities
                 var urls = JIRAUtils.GetUrlsField(issue);
                 Console.WriteLine("[Orchestration][RunJiraDiff][{0}] URLs Retrieved from JIRA:  {1}", ticket, urls.Count);
 
+                await testCaseManager.Browser.Initialize();
+
                 // get all the images first
                 var images = new Dictionary<string, CaptureResult>();
                 foreach (var url in urls)
                 {
-                    // capture the diff
-                    var capture = OrchestrationUtils.CaptureDiff(url.Value, testCaseManager);
+                    var capture = await CaptureDiff(url.Value, testCaseManager);
                     images.Add(url.Key, capture);
                     Console.WriteLine("[Orchestration][RunJiraDiff][{0}] Page captured: {1}", ticket, url.Value.RightSide);
                 }
-                testCaseManager.Dispose();
+
+                await testCaseManager.Browser.Dispose();
                 Console.WriteLine("[Orchestration][RunJiraDiff][{0}] Browser Done. Pages captured: {1}", ticket, images.Count);
 
                 // upload all the images next
@@ -52,18 +54,18 @@ namespace Jankcat.VisualCompare.Lib.Utilities
             }
         }
 
-        public static CaptureResult CaptureDiff(UrlDetails url, ITestCaseManager testCaseManager)
+        public static async Task<CaptureResult> CaptureDiff(UrlDetails url, ITestCaseManager testCaseManager)
         {
             var result = new CaptureResult
             {
                 URL = url.RightSide
             };
             // Original Page
-            testCaseManager.GoToPage_Original(url);
-            result.Original = testCaseManager.Browser.TakeScreenshot();
+            await testCaseManager.GoToPage_Original(url);
+            result.Original = await testCaseManager.Browser.TakeScreenshot();
             // Updated Page
-            testCaseManager.GoToPage_Updated(url);
-            result.Updated = testCaseManager.Browser.TakeScreenshot();
+            await testCaseManager.GoToPage_Updated(url);
+            result.Updated = await testCaseManager.Browser.TakeScreenshot();
             // Compare Image
             var diff = ImageUtils.Compare(result.Original, result.Updated);
             result.Diff = diff.DiffImage;

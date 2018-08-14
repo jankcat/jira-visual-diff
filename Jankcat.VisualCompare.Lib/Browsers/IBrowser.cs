@@ -1,11 +1,13 @@
-﻿using ImageMagick;
+﻿using System.Threading.Tasks;
+using ImageMagick;
 
 namespace Jankcat.VisualCompare.Lib.Browsers
 {
     public interface IBrowser
     {
-        void Dispose();
-        void GoToPage(string url);
-        IMagickImage TakeScreenshot();
+        Task Dispose();
+        Task Initialize();
+        Task GoToPage(string url);
+        Task<IMagickImage> TakeScreenshot();
     }
 }

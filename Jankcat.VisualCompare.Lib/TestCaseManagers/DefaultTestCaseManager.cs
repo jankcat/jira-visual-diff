@@ -1,6 +1,7 @@
 ﻿using System;
 using Jankcat.VisualCompare.Lib.Models;
 using Jankcat.VisualCompare.Lib.Browsers;
+using System.Threading.Tasks;
 
 namespace Jankcat.VisualCompare.Lib.TestCaseManagers
 {
@@ -13,25 +14,20 @@ namespace Jankcat.VisualCompare.Lib.TestCaseManagers
             _browser = browser;
         }
 
-        public void Dispose()
+        public async Task GoToPage_Original(UrlDetails url)
         {
-            _browser.Dispose();
+            await GoToPage(url);
         }
 
-        public void GoToPage_Original(UrlDetails url)
+        public async Task GoToPage_Updated(UrlDetails url)
         {
-            GoToPage(url);
+            await GoToPage(url);
         }
 
-        public void GoToPage_Updated(UrlDetails url)
-        {
-            GoToPage(url);
-        }
-
-        private void GoToPage(UrlDetails url) 
+        private async Task GoToPage(UrlDetails url) 
         {
             // Do things like decide what environment, add credentials, et.
-            _browser.GoToPage(String.Format("http://example.com"));
+            await _browser.GoToPage(String.Format("http://example.com"));
             throw new NotImplementedException();
         }
     }
