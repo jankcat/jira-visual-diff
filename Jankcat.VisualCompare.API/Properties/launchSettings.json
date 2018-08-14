@@ -16,7 +16,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "CM.QA.Tools.VisualCompare.API": {
+    "Jankcat.VisualCompare.API": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "api/visual",

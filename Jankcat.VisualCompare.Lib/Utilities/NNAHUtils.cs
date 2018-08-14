@@ -14,9 +14,9 @@ namespace Jankcat.VisualCompare.Lib.Utilities
             try
             {
                 Console.WriteLine("[NNAHUtils][RunJiraDiff][{0}] Connecting to JIRA...", ticket);
-                var jiraHost = Environment.GetEnvironmentVariable("CMQA_VISUAL_JIRA_HOST");
-                var jiraUser = Environment.GetEnvironmentVariable("CMQA_VISUAL_JIRA_USER");
-                var jiraKey = Environment.GetEnvironmentVariable("CMQA_VISUAL_JIRA_KEY");
+                var jiraHost = Environment.GetEnvironmentVariable("VISDIFF_JIRA_HOST");
+                var jiraUser = Environment.GetEnvironmentVariable("VISDIFF_JIRA_USER");
+                var jiraKey = Environment.GetEnvironmentVariable("VISDIFF_JIRA_KEY");
                 var jira = JIRAUtils.Create(jiraHost, jiraUser, jiraKey);
                 var issue = await JIRAUtils.GetIssueByKey(jira, ticket);
                 // Get URL field
@@ -62,9 +62,9 @@ namespace Jankcat.VisualCompare.Lib.Utilities
 
         private static BrowserManager CreateCMBrowser()
         {
-            var user = Environment.GetEnvironmentVariable("CMQA_VISUAL_GRID_USER");
-            var apiKey = Environment.GetEnvironmentVariable("CMQA_VISUAL_GRID_KEY");
-            var host = Environment.GetEnvironmentVariable("CMQA_VISUAL_GRID_HOST");
+            var user = Environment.GetEnvironmentVariable("VISDIFF_GRID_USER");
+            var apiKey = Environment.GetEnvironmentVariable("VISDIFF_GRID_KEY");
+            var host = Environment.GetEnvironmentVariable("VISDIFF_GRID_HOST");
 
             var caps = BrowserManager.GetDefaultCapabilities();
             caps = BrowserManager.AddCredentials(caps, user, apiKey);

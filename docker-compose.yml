@@ -9,9 +9,9 @@ services:
     depends_on:
       - rabbitmq
     environment:
-      CMQA_VISUAL_RABBIT_USER: "${CMQA_VISUAL_RABBIT_USER}"
-      CMQA_VISUAL_RABBIT_PASS: "${CMQA_VISUAL_RABBIT_PASS}"
-      CMQA_VISUAL_RABBIT_HOST: "${CMQA_VISUAL_RABBIT_HOST}"
+      VISDIFF_RABBIT_USER: "${VISDIFF_RABBIT_USER}"
+      VISDIFF_RABBIT_PASS: "${VISDIFF_RABBIT_PASS}"
+      VISDIFF_RABBIT_HOST: "${VISDIFF_RABBIT_HOST}"
     labels:
       jankcat.visualcompare.api.description: "Visual Compare Web API"
     ports:
@@ -28,15 +28,15 @@ services:
       - rabbitmq
       - sauceconnect
     environment:
-      CMQA_VISUAL_RABBIT_USER: "${CMQA_VISUAL_RABBIT_USER}"
-      CMQA_VISUAL_RABBIT_PASS: "${CMQA_VISUAL_RABBIT_PASS}"
-      CMQA_VISUAL_RABBIT_HOST: "${CMQA_VISUAL_RABBIT_HOST}"
-      CMQA_VISUAL_JIRA_HOST: "${CMQA_VISUAL_JIRA_HOST}"
-      CMQA_VISUAL_JIRA_USER: "${CMQA_VISUAL_JIRA_USER}"
-      CMQA_VISUAL_JIRA_KEY: "${CMQA_VISUAL_JIRA_KEY}"
-      CMQA_VISUAL_GRID_HOST: "${CMQA_VISUAL_GRID_HOST}"
-      CMQA_VISUAL_GRID_USER: "${CMQA_VISUAL_GRID_USER}"
-      CMQA_VISUAL_GRID_KEY: "${CMQA_VISUAL_GRID_KEY}"
+      VISDIFF_RABBIT_USER: "${VISDIFF_RABBIT_USER}"
+      VISDIFF_RABBIT_PASS: "${VISDIFF_RABBIT_PASS}"
+      VISDIFF_RABBIT_HOST: "${VISDIFF_RABBIT_HOST}"
+      VISDIFF_JIRA_HOST: "${VISDIFF_JIRA_HOST}"
+      VISDIFF_JIRA_USER: "${VISDIFF_JIRA_USER}"
+      VISDIFF_JIRA_KEY: "${VISDIFF_JIRA_KEY}"
+      VISDIFF_GRID_HOST: "${VISDIFF_GRID_HOST}"
+      VISDIFF_GRID_USER: "${CVISDIFF_GRID_USER}"
+      VISDIFF_GRID_KEY: "${VISDIFF_GRID_KEY}"
     labels:
       jankcat.visualcompare.worker.description: "Visual Compare Worker"
     restart: unless-stopped
@@ -44,8 +44,8 @@ services:
   rabbitmq:
     image: rabbitmq:3-management
     environment:
-      RABBITMQ_DEFAULT_USER: "${CMQA_VISUAL_RABBIT_USER}"
-      RABBITMQ_DEFAULT_PASS: "${CMQA_VISUAL_RABBIT_PASS}"
+      RABBITMQ_DEFAULT_USER: "${VISDIFF_RABBIT_USER}"
+      RABBITMQ_DEFAULT_PASS: "${VISDIFF_RABBIT_PASS}"
     labels:
       jankcat.visualcompare.rabbit.description: "Visual Compare Middleware"
     ports:
@@ -62,5 +62,5 @@ services:
       - "0.0.0.0:4445:4445"
     labels:
       jankcat.visualcompare.sauceconnect.description: "Visual Compare Sauce Connect Proxy"
-    command: "--user ${CMQA_VISUAL_GRID_USER} --api-key ${CMQA_VISUAL_GRID_KEY} -i visual-jira-pool"
+    command: "--user ${VISDIFF_GRID_USER} --api-key ${VISDIFF_GRID_KEY} -i visual-jira-pool"
 

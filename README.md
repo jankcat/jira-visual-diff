@@ -74,17 +74,17 @@ Replace the variables below with your own! Remember to replace ens160 in the ifc
 ```
 git clone ssh://git@bitbucket.criticalmass.com:7999/qa/qa-tools-visual.git
 
-export CMQA_VISUAL_GRID_USER=sauce_labs_username
-export CMQA_VISUAL_GRID_KEY="sauce_labs_api_key"
-export CMQA_VISUAL_GRID_HOST="http://ondemand.saucelabs.com:80/wd/hub"
+export VISDIFF_GRID_USER=sauce_labs_username
+export VISDIFF_GRID_KEY="sauce_labs_api_key"
+export VISDIFF_GRID_HOST="http://ondemand.saucelabs.com:80/wd/hub"
 
-export CMQA_VISUAL_JIRA_HOST="https://jira_url"
-export CMQA_VISUAL_JIRA_USER="some_jira_user"
-export CMQA_VISUAL_JIRA_KEY="some_jira_password"
+export VISDIFF_JIRA_HOST="https://jira_url"
+export VISDIFF_JIRA_USER="some_jira_user"
+export VISDIFF_JIRA_KEY="some_jira_password"
 
-export CMQA_VISUAL_RABBIT_HOST=$(sudo ifconfig ens160 | sed -En 's/127.0.0.1//;s/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p')
-export CMQA_VISUAL_RABBIT_USER="a_username_for_this_tool_internally"
-export CMQA_VISUAL_RABBIT_PASS="a_password_for_this_tool_internally"
+export VISDIFF_RABBIT_HOST=$(sudo ifconfig ens160 | sed -En 's/127.0.0.1//;s/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p')
+export VISDIFF_RABBIT_USER="a_username_for_this_tool_internally"
+export VISDIFF_RABBIT_PASS="a_password_for_this_tool_internally"
 
 docker-compose up -d
 ```
