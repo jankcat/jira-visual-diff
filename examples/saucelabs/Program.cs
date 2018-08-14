@@ -76,7 +76,7 @@ namespace Jankcat.VisualCompare.Worker
             var tcManager = new DefaultTestCaseManager(browser);
 
 			// You can do some fun stuff in here, like:
-			// if (ticket.startsWith("PROJECT1-")) tcManager = new ProjectOneTCManager(browser);
+			// if (ticket.startsWith("PROJECT1-")) tcManager = new ProjectOneTCManager(browser); - This example could also be handled inside of a single TCManager
 			// if (ticket.startsWith("MOBILE-")) tcManager = newMobileTCManager(new MobileBrowser());
 
             // GO!

@@ -2,6 +2,7 @@
 using Jankcat.VisualCompare.Lib.Models;
 using Jankcat.VisualCompare.Lib.Browsers;
 using System.Threading.Tasks;
+using Atlassian.Jira;
 
 namespace Jankcat.VisualCompare.Lib.TestCaseManagers
 {
@@ -9,10 +10,19 @@ namespace Jankcat.VisualCompare.Lib.TestCaseManagers
     {
         public IBrowser Browser { get { return _browser; } }
         private IBrowser _browser;
+        private Issue _issue;
+
         public DefaultTestCaseManager(IBrowser browser)
         {
             _browser = browser;
         }
+
+        public void SetIssue(Issue issue)
+        {
+            _issue = issue;
+        }
+
+        public bool IsActionable => true;
 
         public async Task GoToPage_Original(UrlDetails url)
         {

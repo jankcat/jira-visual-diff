@@ -21,6 +21,12 @@ namespace Jankcat.VisualCompare.Lib.Utilities
                 Console.WriteLine("[Orchestration][RunJiraDiff][{0}] URLs Retrieved from JIRA:  {1}", ticket, urls.Count);
 
                 await testCaseManager.Browser.Initialize();
+                testCaseManager.SetIssue(issue);
+
+                if (!testCaseManager.IsActionable) {
+                    Console.WriteLine("[Orchestration][RunJiraDiff][{0}] Ticket not actionable", ticket);
+                    return;
+                }
 
                 // get all the images first
                 var images = new Dictionary<string, CaptureResult>();
