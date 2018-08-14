@@ -71,7 +71,7 @@ namespace Jankcat.VisualCompare.Worker
             var host = Environment.GetEnvironmentVariable("VISDIFF_GRID_HOST");
             var opts = SauceLabsBrowser.GetDefaultBrowserOptions(true); // Set this to false for no tunnel
             opts = SeleniumBrowser.AddCredentials(opts, user, apiKey);
-			var browser = new SauceLabsBrowser(opts, host);
+            var browser = new SauceLabsBrowser(opts, host);
 
             var tcManager = new DefaultTestCaseManager(browser)
             {
