@@ -1,13 +1,14 @@
-FROM microsoft/aspnetcore:2.0 AS base
+FROM microsoft/dotnet:2.1-aspnetcore-runtime AS base
 WORKDIR /app
 EXPOSE 80
 
-FROM microsoft/aspnetcore-build:2.0 AS build
+FROM microsoft/dotnet:2.1-sdk AS build
 WORKDIR /src
 COPY *.sln ./
 COPY Jankcat.VisualCompare.API/Jankcat.VisualCompare.API.csproj Jankcat.VisualCompare.API/
 COPY Jankcat.VisualCompare.Lib/Jankcat.VisualCompare.Lib.csproj Jankcat.VisualCompare.Lib/
-RUN dotnet restore
+RUN dotnet restore Jankcat.VisualCompare.Lib/Jankcat.VisualCompare.Lib.csproj
+RUN dotnet restore Jankcat.VisualCompare.API/Jankcat.VisualCompare.API.csproj
 COPY . .
 WORKDIR /src/Jankcat.VisualCompare.API
 RUN dotnet build -c Release -o /app

@@ -31,6 +31,8 @@ Check out the examples/pre-written `IBrowser`s if you want to see what is availa
 
 ### JIRA
 
+`http://your-ip:5000/api/visual/jira/${issue.key}`, for example: `http://localhost:5000/api/visual/jira/TEST-1`
+
 Set up as a [JIRA WebHook](https://developer.atlassian.com/server/jira/platform/webhooks/).
 
 In our workflow, we have the WebHook have no "default" triggers, and instead trigger the WebHook via a [post function](https://confluence.atlassian.com/adminjiracloud/advanced-workflow-configuration-776636620.html#Advancedworkflowconfiguration-optionalpostfunctionsOptionalpostfunctions) on specific workflow transitions.
@@ -76,14 +78,14 @@ sudo ln -sf /usr/local/bin/docker-compose /usr/bin/docker-compose
 
 ### Visual Compare
 
-Replace the variables below with your own! Remember to replace ens160 in the ifconfig command with your interface name. Alternatively, you can replace that entire command with your IP Address.
+Replace the variables below with your own! Remember to replace en0 in the ifconfig command with your interface name. Alternatively, you can replace that entire command with your IP Address.
 
 ```
 export VISDIFF_JIRA_HOST="https://jira_url.com"
 export VISDIFF_JIRA_USER="some_jira_user"
 export VISDIFF_JIRA_KEY="some_jira_password"
 
-export VISDIFF_RABBIT_HOST=$(sudo ifconfig ens160 | sed -En 's/127.0.0.1//;s/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p')
+export VISDIFF_RABBIT_HOST=$(sudo ifconfig en0 | sed -En 's/127.0.0.1//;s/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p')
 export VISDIFF_RABBIT_USER="a_username_for_this_tool_internally"
 export VISDIFF_RABBIT_PASS="a_password_for_this_tool_internally"
 

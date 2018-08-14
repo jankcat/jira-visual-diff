@@ -1,12 +1,13 @@
-FROM microsoft/dotnet:2.0-runtime AS base
+FROM microsoft/dotnet:2.1-runtime AS base
 WORKDIR /app
 
-FROM microsoft/dotnet:2.0-sdk AS build
+FROM microsoft/dotnet:2.1-sdk AS build
 WORKDIR /src
 COPY *.sln ./
 COPY Jankcat.VisualCompare.Worker/Jankcat.VisualCompare.Worker.csproj Jankcat.VisualCompare.Worker/
 COPY Jankcat.VisualCompare.Lib/Jankcat.VisualCompare.Lib.csproj Jankcat.VisualCompare.Lib/
-RUN dotnet restore
+RUN dotnet restore Jankcat.VisualCompare.Lib/Jankcat.VisualCompare.Lib.csproj
+RUN dotnet restore Jankcat.VisualCompare.Worker/Jankcat.VisualCompare.Worker.csproj
 COPY . .
 WORKDIR /src/Jankcat.VisualCompare.Worker
 RUN dotnet build -c Release -o /app
