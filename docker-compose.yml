@@ -26,7 +26,6 @@ services:
     depends_on:
       - jankcat.visualcompare.api
       - rabbitmq
-      - sauceconnect
     environment:
       VISDIFF_RABBIT_USER: "${VISDIFF_RABBIT_USER}"
       VISDIFF_RABBIT_PASS: "${VISDIFF_RABBIT_PASS}"
@@ -52,15 +51,3 @@ services:
       - "8080:15672"
       - "5672:5672"
     restart: unless-stopped
-    
-  sauceconnect:
-    image: jordan/sauce-connect:latest
-    restart: unless-stopped
-    expose:
-      - "4445"
-    ports:
-      - "0.0.0.0:4445:4445"
-    labels:
-      jankcat.visualcompare.sauceconnect.description: "Visual Compare Sauce Connect Proxy"
-    command: "--user ${VISDIFF_GRID_USER} --api-key ${VISDIFF_GRID_KEY} -i visual-jira-pool"
-

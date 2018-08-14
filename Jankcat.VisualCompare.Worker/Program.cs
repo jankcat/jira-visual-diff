@@ -69,7 +69,7 @@ namespace Jankcat.VisualCompare.Worker
             var user = Environment.GetEnvironmentVariable("VISDIFF_GRID_USER");
             var apiKey = Environment.GetEnvironmentVariable("VISDIFF_GRID_KEY");
             var host = Environment.GetEnvironmentVariable("VISDIFF_GRID_HOST");
-            var opts = SauceLabsBrowser.GetDefaultBrowserOptions(true);
+            var opts = SauceLabsBrowser.GetDefaultBrowserOptions(false);
             opts = SeleniumBrowser.AddCredentials(opts, user, apiKey);
             var browser = new SauceLabsBrowser(opts, host);
 
