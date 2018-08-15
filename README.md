@@ -16,7 +16,7 @@ A visual comparison tool that displays your diffs right in JIRA!
 1. Install [docker](#docker) + [docker-compose](#docker-compose)
 2. Fork this repo
 3. Modify the `Worker` project's `Program.cs` file. Either change the `ProdBaseUrl` and `StageBaseUrl` to your own, or impliment `ITestCaseManager` using the provided example.
-4. Set your JIRA and RabbitMQ environment variables, start the project [(see below)](#visual-compare).
+4. Set your JIRA and RabbitMQ environment variables, start the project ([see below](#visual-compare)).
 5. [Set up the WebHook](#jira) in your JIRA instance as you see fit.
 
 ### ITestCaseManager
