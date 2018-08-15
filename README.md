@@ -1,4 +1,4 @@
-## Info
+# jira-visual-diff
 
 A visual comparison tool that displays your diffs right in JIRA!
 
