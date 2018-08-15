@@ -23,25 +23,22 @@ namespace Jankcat.VisualCompare.Lib.Browsers
 
         public async Task Initialize()
         {
-            await Task.Run(() => {
-                _driver = new RemoteWebDriver(new Uri(_grid), _opts);
-            });
+            _driver = new RemoteWebDriver(new Uri(_grid), _opts);
+            await Task.CompletedTask;
         }
 
         public async Task Dispose()
         {
-            await Task.Run(() => {
-                _driver.Quit();
-            });
+            _driver.Quit();
+            await Task.CompletedTask;
         }
 
         public async Task GoToPage(string url)
         {
-            await Task.Run(() => {
-                _driver.Navigate().GoToUrl(url);
-                var wait = new OpenQA.Selenium.Support.UI.WebDriverWait(_driver, TimeSpan.FromSeconds(90.00));
-                wait.Until(driver => ((IJavaScriptExecutor)_driver).ExecuteScript("return document.readyState").Equals("complete"));
-            });
+            _driver.Navigate().GoToUrl(url);
+            var wait = new OpenQA.Selenium.Support.UI.WebDriverWait(_driver, TimeSpan.FromSeconds(90.00));
+            wait.Until(driver => ((IJavaScriptExecutor)_driver).ExecuteScript("return document.readyState").Equals("complete"));
+            await Task.CompletedTask;
         }
 
         public static DriverOptions GetDefaultBrowserOptions()
@@ -77,7 +74,7 @@ namespace Jankcat.VisualCompare.Lib.Browsers
             SeleniumUtils.NormalScroll(_driver, 0, 0);
 
             // Let the browser catch up
-            await Task.Delay(200);
+            await Task.Delay(250);
 
             var seOpts = new ScreenshotOptions();
             var dimensions = SeleniumUtils.GetPageDimensions(_driver);
