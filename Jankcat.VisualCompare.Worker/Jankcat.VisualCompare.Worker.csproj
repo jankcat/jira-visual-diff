@@ -13,4 +13,7 @@
     <ProjectReference Include="..\Jankcat.VisualCompare.Lib\Jankcat.VisualCompare.Lib.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Models\" />
+  </ItemGroup>
 </Project>

@@ -1,6 +1,7 @@
 using Jankcat.VisualCompare.Lib.Browsers;
 using Jankcat.VisualCompare.Lib.TestCaseManagers;
 using Jankcat.VisualCompare.Lib.Utilities;
+using Newtonsoft.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System;
@@ -23,7 +24,7 @@ namespace Jankcat.VisualCompare.Worker
                 eArgs.Cancel = true;
             };
 
-            // Initialize the JIRA listener
+            // Initialize the rabbit listeners
             Console.WriteLine("[RABBIT][JIRA] Listener starting");
             var factory = RabbitUtils.GetRabbitConnection();
             using (var connection = factory.CreateConnection())
@@ -35,8 +36,14 @@ namespace Jankcat.VisualCompare.Worker
                                      autoDelete: false,
                                      arguments: null);
 
-                var consumer = new EventingBasicConsumer(channel);
-                consumer.Received += (model, ea) =>
+                channel.QueueDeclare(queue: "URL",
+                                     durable: false,
+                                     exclusive: false,
+                                     autoDelete: false,
+                                     arguments: null);
+                
+                var jiraConsumer = new EventingBasicConsumer(channel);
+                jiraConsumer.Received += (model, ea) =>
                 {
                     var body = ea.Body;
                     var message = Encoding.UTF8.GetString(body);
@@ -47,7 +54,22 @@ namespace Jankcat.VisualCompare.Worker
                 };
                 channel.BasicConsume(queue: "JIRA",
                                      autoAck: true,
-                                     consumer: consumer);
+                                     consumer: jiraConsumer);
+
+                var urlConsumer = new EventingBasicConsumer(channel);
+                urlConsumer.Received += (model, ea) =>
+                {
+                    var body = ea.Body;
+                    var message = Encoding.UTF8.GetString(body);
+                    Console.WriteLine(String.Format("[RABBIT][URL] Received: {0}", message));
+                    if (string.IsNullOrWhiteSpace(message)) return;
+                    var urls = (Models.UrlRequest)JsonConvert.DeserializeObject(message);
+                    // Send this ticket to the Orchestrator
+                    UrlAsync(urls).GetAwaiter().GetResult();
+                };
+                channel.BasicConsume(queue: "URL",
+                                     autoAck: true,
+                                     consumer: urlConsumer);
 
                 Console.WriteLine("[RABBIT][JIRA] Listener started");
 
@@ -77,6 +99,13 @@ namespace Jankcat.VisualCompare.Worker
             Console.WriteLine(String.Format("[RABBIT][JIRA-ASYNC] Received: {0}", ticket));
             await OrchestrationUtils.RunJiraDiff(jira, tcManager, ticket);
             Console.WriteLine(String.Format("[RABBIT][JIRA-ASYNC] Completed: {0}", ticket));
+        }
+
+        private static async Task UrlAsync(Models.UrlRequest ticket)
+        {
+            // GO!
+            Console.WriteLine(String.Format("[RABBIT][URL-ASYNC] Received: {0}", ticket));
+            Console.WriteLine(String.Format("[RABBIT][URL-ASYNC] Completed: {0}", ticket));
         }
     }
 }
